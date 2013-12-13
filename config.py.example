@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
+#===========================================================
+# File Name: config.py
+# Author：wangzhe
+# E-mail: wangzhehyd@163.com
+# Created Time: 2013-11-23
+# Version: 1.0
+# Description: 
+# Copyright: Chemical Biology Research Center
+#===========================================================
+
+# 代理信息
+proxy_host = ""
+proxy_port = ""
+
+# 发送邮箱信息
+email_host = "smtp.qq.com"
+email_user = ""
+email_pass = ""
+email_postfix = "qq.com"
+subject = "您的文献已下载完成"
+content = "您的文献已下载完成，本邮件为自动发送，欢迎您再次使用！"
+
+# 各类杂志文献pdf链接获取信息，可以直接用正则替换
+convert_rules = [
+    (r"http://(pubs\.acs\.org|www\.annualreviews\.org|www\.nejm\.org|online\.liebertpub\.com|informahealthcare\.com|apsjournals\.apsnet\.org|www\.tandfonline\.com|www\.worldscientific\.com|online\.liebertpub\.com|www\.expert\-reviews\.com)/doi/.*?/(.*)", "http://{{0}}/doi/pdf/{{1}}"),
+    (r"http://www\.nature\.com/(.*)/journal/v(.*?)/n(.*?)/.*?/(.*?).html", "http://www.nature.com/{{0}}/journal/v{{1}}/n{{2}}/pdf/{{3}}.pdf"),
+    (r"http://link.springer.com/(article|chapter|protocol|referenceworkentry)/(.*)", "http://link.springer.com/content/pdf/{{1}}.pdf"),
+    (r"http://onlinelibrary.wiley.com/doi/(.*)/(abstract|full|references|citedby|references)", "http://onlinelibrary.wiley.com/doi/{{0}}/pdf"),
+    (r"http://(.*?)\.(sciencemag|oxfordjournals|pnas|sgmjournals|jbc|neurology|mcponline|jappl|aacrjournals|physiology|endojournals|bmj|asm|aspetjournals|plantphysiol|ahajournals|bmjjournals|clinchem|anesthesia-analgesia|ajsonline|biologists|sagepub)\.(.*?)/content/early/(.*?)/(.*?)/(.*?)/(.*?)(\.short|\.long|\.full|\.abstract|\.citation|\.full.pdf\+html|$)",
+    "http://{{0}}.{{1}}.{{2}}/content/early/{{3}}/{{4}}/{{5}}/{{6}}.full.pdf"),
+    (r"http://(.*?)\.(sciencemag|oxfordjournals|pnas|sgmjournals|jbc|neurology|mcponline|jappl|aacrjournals|physiology|endojournals|bmj|asm|aspetjournals|plantphysiol|ahajournals|bmjjournals|clinchem|anesthesia-analgesia|ajsonline|biologists|sagepub)\.(.*?)/content/(.*?)/(.*?)/(\w*).*",
+    "http://{{0}}.{{1}}.{{2}}/content/{{3}}/{{4}}/{{5}}.full.pdf"),
+
+    (r"http://pubs\.rsc\.org/en/content/articlelanding/(.*)", "http://pubs.rsc.org/en/content/articlepdf/{{0}}"),
+    (r"http://iospress\.metapress\.com/content/(\w*).*", "http://iospress.metapress.com/content/{{0}}/fulltext.pdf"),
+    (r"http://iopscience\.iop\.org/(.*?)/(.*?)/(.*?)/(.*?)(/|\.refs|\.metrics|\.article|$)", "http://iopscience.iop.org/{{0}}/{{1}}/{{2}}/{{3}}/pdf/{{0}}_{{1}}_{{2}}_{{3}}.pdf"),
+]
+
+
+# 各类数据库文献pdf链接获取信息，无法直接替换需要正则匹配后跳转
+redirect_rules = [
+        (r"http://www\.sciencedirect\.com/science/article/pii/", r"pdfurl=\"(.*?)\""),
+        (r"http://onlinelibrary\.wiley\.com/doi/.*/pdf", r"id=\"pdfDocument\" src=\"(.*?)\""),
+        (r"http://www.ncbi.nlm.nih.gov/pubmed/", r"<div class=\"icons\"><a href=\"(.*?)\" .*? </div>"),
+
+]
